@@ -91,7 +91,7 @@ function copyToClipboard(cell) {
     cell.classList.add('highlight');
       setTimeout(() => {
         cell.classList.remove('highlight');
-      },    200);
+      },    100);
     const textToCopy = cell.innerText;
     const tempTextarea = document.createElement('textarea');
     tempTextarea.value = textToCopy;

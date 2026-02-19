@@ -58,7 +58,13 @@ def liste(request):
         result_all.append(subliste)
     result = result_all
     result_systems = list(it_liste.objects.values_list('system',flat=True).distinct())
-    return render(request, "liste.html", {"it_liste_all":result,'path_filter':urlsystem, 'it_liste_system':result_systems})
+    # collect distinct groups, optionally filtered by the selected system
+    if urlsystem:
+        result_groups = list(it_liste.objects.filter(system=urlsystem).values_list('gruppe', flat=True).distinct())
+    else:
+        result_groups = list(it_liste.objects.values_list('gruppe', flat=True).distinct())
+
+    return render(request, "liste.html", {"it_liste_all":result, 'path_filter':urlsystem, 'it_liste_system':result_systems, 'it_liste_gruppe': result_groups})
 
 
 def liste_edit(request):

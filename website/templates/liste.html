@@ -36,23 +36,26 @@
     {% endfor %}
     {% endfor %}
 
-    <tr style="position: sticky; z-index: 1000; bottom: 0px;background: #bbc3ad;">
-        <form method="post" action="/liste{% if path_filter %}?urlsystem={{path_filter}}{% endif %}">
-            {% csrf_token %}
-            <td id="tabelle_fußzelle" style="text-align: center;"><button onclick="location.href='liste_edit{% if path_filter %}?urlsystem={{path_filter}}{% endif %}'" type="button" id="tabelle_buttonorange">~</button></td>
-            <td id="tabelle_fußzelle">
-                <input list="datalist_gruppe" name="system" id="tabelle_input" value="{% if path_filter %}{{path_filter}}{% else %}{% endif %}">
-                <datalist id="datalist_gruppe" class="tabelle_fußzelle">
-                    {% for item in it_liste_system %}<option value="{{item}}">{{item}}</option>{% endfor %}
-                </datalist>
-            </td>
-            <td id="tabelle_fußzelle"><input id="tabelle_input" type="text" name="gruppe" placeholder="Gruppe"></td>
-            <td id="tabelle_fußzelle" style="border-left: none; border-right: none;"><input id="tabelle_input" type="text" name="beschreibung" placeholder="Beschreibung" autocomplete="off"><a>|</a></td>
-            <td id="tabelle_fußzelle" style="border-left: none; border-right: none;"><input id="tabelle_input" type="text" name="code" placeholder="Code" style="text-align: center;" autocomplete="off"><a>|</a></td>
-            <td id="tabelle_fußzelle" style="border-left: none;"><input id="tabelle_input" type="text" name="hinweise" placeholder="Hinweise" style="text-align: center" autocomplete="off"></td>
-            <td id="tabelle_fußzelle" style="border-right-style: none; width: 40px"><input id="tabelle_buttongruen" type="submit" value="+"></td>
-        </form>
-    </tr>
+        <tfoot id="table_footer">
+            <tr>
+                <form method="post" action="/liste{% if path_filter %}?urlsystem={{path_filter}}{% endif %}" id="footer_form">
+                    {% csrf_token %}
+                    <td id="tabelle_fußzelle"><button type="button" id="tabelle_buttonorange" onclick="location.href='liste_edit{% if path_filter %}?urlsystem={{path_filter}}{% endif %}'">~</button></td>
+                    <td id="tabelle_fußzelle"><input list="datalist_gruppe" name="system" id="tabelle_input" placeholder="System" value="{% if path_filter %}{{path_filter}}{% endif %}" autocomplete="off">
+                    <datalist id="datalist_gruppe" class="tabelle_fußzelle">
+                            {% for item in it_liste_system %}<option value="{{item}}">{{item}}</option>{% endfor %}
+                    </datalist></td>
+                    <td id="tabelle_fußzelle"><input list="datalist_gruppe2" id="tabelle_input" type="text" name="gruppe" placeholder="Gruppe" autocomplete="off">
+                    <datalist id="datalist_gruppe2" class="tabelle_fußzelle">
+                        {% for item in it_liste_gruppe %}<option value="{{item}}">{{item}}</option>{% endfor %}
+                    </datalist></td>
+                    <td id="tabelle_fußzelle"><input id="tabelle_input" type="text" name="beschreibung" placeholder="Beschreibung" autocomplete="off"></td>
+                    <td id="tabelle_fußzelle"><input id="tabelle_input" type="text" name="code" placeholder="Code"  autocomplete="off"></td>
+                    <td id="tabelle_fußzelle"><input id="tabelle_input" type="text" name="hinweise" placeholder="Hinweise" autocomplete="off"></td>
+                    <td id="tabelle_fußzelle" style="border-right-style: none; width: 40px"><input id="tabelle_buttongruen" type="submit" value="+"></td>
+                </form>
+            </tr>
+        </tfoot>
 
 </table>
 
@@ -61,7 +64,7 @@ function copyToClipboard(cell) {
     cell.classList.add('highlight');
       setTimeout(() => {
         cell.classList.remove('highlight');
-      },    200);
+      },    100);
     const textToCopy = cell.innerText;
     const tempTextarea = document.createElement('textarea');
     tempTextarea.value = textToCopy;

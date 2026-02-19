@@ -1,0 +1,72 @@
+{% extends "navbar.html" %}
+
+{% block content %}
+
+<div style="display: flex; justify-content: space-around; align-items: flex-start;">
+
+<table id="tabelle" style="width: 40%;">
+    
+    <tr>
+        <th colspan="5" style="border-bottom: 1px solid">ToDo's</th>
+    </tr>
+
+
+    {% for row in roadmap %}
+        {% if not row.erledigt %}
+            <tr>
+                <td id="tabelle_zelle" style="width: 1%">{{row.id}}</td>
+                <td id="tabelle_zelle" style="width: 1%">{{row.created_at}}</td>
+                <td id="tabelle_zelle">{{row.ziel}}</td>
+                <form method="POST" action="roadmap">
+                    {% csrf_token %}
+                    <input type="hidden" name="post_id" value="finish">
+                    <input type="hidden" name="finish_id" value="{{row.id}}">
+                    <td id="tabelle_zelle" style="text-align: center; padding: 0; width: 30px"><input id="tabelle_buttongruen" type="submit" value="&#x2713"></td>
+                </form>
+                <form method="POST" action="roadmap">
+                    {% csrf_token %}
+                    <input type="hidden" name="post_id" value="delete">
+                    <input type="hidden" name="delete_id" value="{{row.id}}">
+                    <td id="tabelle_zelle" style="text-align: center; padding: 0; width: 30px; border-right: none"><input id="tabelle_buttonred" type="submit" value="X"></td>
+                </form>
+            </tr>
+        {% endif %}
+    {% endfor %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="post_id" value="create">
+        <tr>
+            <td id="tabelle_fußzelle" colspan="3"><input id="tabelle_input" type="text" name="name_input" placeholder="neuer Eintrag" autocomplete="off" style="text-align: center;"></td>
+            <td id="tabelle_fußzelle" colspan="2" style="padding: 0px; min-width: 50px;"><input id="tabelle_buttongruen" type="submit" value="+"></td>
+        </tr>
+    </form>
+</table>
+
+<table id="tabelle" style="width: 40%;">
+    
+    <tr>
+        <th colspan="4" style="border-bottom: 1px solid">Erledigt</th>
+    </tr>
+
+
+    {% for row in roadmap %}
+        {% if row.erledigt %}
+            <tr>
+                <td id="tabelle_zelle">{{row.id}}</td>
+                <td id="tabelle_zelle">{{row.erledigt_am}}</td>
+                <td id="tabelle_zelle">{{row.ziel}}</td>
+                <form method="POST" action="roadmap">
+                    {% csrf_token %}
+                    <input type="hidden" name="post_id" value="delete">
+                    <input type="hidden" name="delete_id" value="{{row.id}}">
+                    <td id="tabelle_zelle" style="text-align: center; padding: 0; width: 30px; border-right: none"><input id="tabelle_buttonred" type="submit" value="X"></td>
+                </form>
+            </tr>
+        {% endif %}
+    {% endfor %}
+</table>
+
+</div>
+
+{% endblock %}

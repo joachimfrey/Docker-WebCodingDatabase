@@ -1,0 +1,77 @@
+{% extends "navbar.html" %}
+
+{% block content %}
+
+<nav>
+    <div>
+        <div id="navbar_sub">
+            <a id="navbaritem_sub" href="/liste" style="font-size: 20px;">&#x27F3</a>
+            {% for item in it_liste_system %}<a id="navbaritem_sub" href="/liste?urlsystem={{item}}">{{item}}</a>{% endfor %}
+        </div>
+    </div>
+</nav>
+
+<table id="tabelle">
+
+    <tr><th id="tabelle_zelle" colspan="100%" style="background: #44543b;font-size: 40px;color: #f1f1f1; border-right-style: none">IT-Befehle</th></tr>
+
+    {% for row in it_liste_all %}
+    <tr><th id="tabelle_zelle" colspan="100%" style="background: #829366; text-align: start; border-right-style: none">{{row.0.0.system}}</th></tr>
+    <tr>
+        <th id="tabelle_zelle" style="width: 1%">ID</th>
+        <th id="tabelle_zelle" style="width: 1%">Datum</th>
+        <th id="tabelle_zelle" colspan="5" style="border-right-style: none">Code</th>
+    </tr>
+    {% for row2 in row %}
+    <tr><td id="tabelle_zelle"></td><td id="tabelle_zelle"></td> <th id="tabelle_zelle" colspan="100%" style="background: #829366; text-align: start; border-right-style: none">{{row2.0.gruppe}}</th></tr>
+    {% for row3 in row2 %}
+    <tr>
+        <td id="tabelle_zelle" style="text-align: center">{{row3.id}}</td>
+        <td id="tabelle_zelle" style="text-align: center">{{row3.created_at}}</td>
+        <td id="tabelle_zelle" colspan="2" style="border-left: none; border-right: none; padding-right: 100px">{{row3.beschreibung}}</td>
+        <td id="tabelle_zelle_copy" onclick="copyToClipboard(this)" style="border-left: none; border-right: none; width: 50%;">{{row3.code}}</td>
+        <td id="tabelle_zelle" colspan="2" style="text-align: end; border-left: none; border-right: none;">{{row3.hinweise}}</td>
+    </tr>
+    {% endfor %}
+    {% endfor %}
+    {% endfor %}
+
+    <tr style="position: sticky; z-index: 1000; bottom: 0px;background: #bbc3ad;">
+        <form method="post" action="/liste{% if path_filter %}?urlsystem={{path_filter}}{% endif %}">
+            {% csrf_token %}
+            <td id="tabelle_fußzelle" style="text-align: center;"><button onclick="location.href='liste_edit{% if path_filter %}?urlsystem={{path_filter}}{% endif %}'" type="button" id="tabelle_buttonorange">~</button></td>
+            <td id="tabelle_fußzelle">
+                <input list="datalist_gruppe" name="system" id="tabelle_input" value="{% if path_filter %}{{path_filter}}{% else %}{% endif %}">
+                <datalist id="datalist_gruppe" class="tabelle_fußzelle">
+                    {% for item in it_liste_system %}<option value="{{item}}">{{item}}</option>{% endfor %}
+                </datalist>
+            </td>
+            <td id="tabelle_fußzelle"><input id="tabelle_input" type="text" name="gruppe" placeholder="Gruppe"></td>
+            <td id="tabelle_fußzelle" style="border-left: none; border-right: none;"><input id="tabelle_input" type="text" name="beschreibung" placeholder="Beschreibung" autocomplete="off"><a>|</a></td>
+            <td id="tabelle_fußzelle" style="border-left: none; border-right: none;"><input id="tabelle_input" type="text" name="code" placeholder="Code" style="text-align: center;" autocomplete="off"><a>|</a></td>
+            <td id="tabelle_fußzelle" style="border-left: none;"><input id="tabelle_input" type="text" name="hinweise" placeholder="Hinweise" style="text-align: center" autocomplete="off"></td>
+            <td id="tabelle_fußzelle" style="border-right-style: none; width: 40px"><input id="tabelle_buttongruen" type="submit" value="+"></td>
+        </form>
+    </tr>
+
+</table>
+
+<script>
+function copyToClipboard(cell) {
+    cell.classList.add('highlight');
+      setTimeout(() => {
+        cell.classList.remove('highlight');
+      },    200);
+    const textToCopy = cell.innerText;
+    const tempTextarea = document.createElement('textarea');
+    tempTextarea.value = textToCopy;
+    document.body.appendChild(tempTextarea);
+    tempTextarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempTextarea);
+
+    cell.classList.add('highlight');
+}
+</script>
+
+{% endblock %}

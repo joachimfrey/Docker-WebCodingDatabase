@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href=" {% static 'jfdb/css/stylesheet.css' %} ">
+    <link rel="shortcut icon" type="image/png" href="{% static 'jfdb/favicon.ico' %}"/>
+    <title>JF Datenbank</title>
+</head>
+
+<body>
+    {% block navbar %}
+    <nav>
+        <div id="navbar">
+            <a id="navbaritem" href="./" class="{% if request.get_full_path == "/" %} active {% endif %}">JF Datenbank</a>
+            <a id="navbaritem" href="./liste" class="{% if request.path|slice:":6" == '/liste' %} active {% endif %}">Liste</a>
+            <a id="navbaritem" href="./skripte" class="{% if request.path|slice:":8" == '/skripte' %} active {% endif %}">Skripte</a>
+            <a id="navbaritem" href="./roadmap" class="{% if request.path|slice:":8" == '/roadmap' %} active {% endif %}">Roadmap</a>
+            <a id="navbaritem" style="flex-grow: 1">Platzhalter</a>
+            <a id="navbaritem" style="float: right">Über</a>
+        </div>
+    </nav>
+    {% endblock %}
+
+    {% block content %}
+    {% endblock %}
+</body>

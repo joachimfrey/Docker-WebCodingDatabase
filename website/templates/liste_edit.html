@@ -1,0 +1,69 @@
+{% extends "navbar.html" %}
+
+{% block content %}
+
+<nav>
+    <div>
+        <div id="navbar_sub">
+            <a id="navbaritem_sub" href="/liste_edit" style="font-size: 20px;">&#x27F3</a>
+            {% for item in it_liste_system %}<a id="navbaritem_sub" href="/liste_edit?urlsystem={{item}}">{{item}}</a>{% endfor %}
+        </div>
+    </div>
+</nav>
+
+<table id="tabelle">
+
+    <tr>
+        <th style="width: 1%">ID</th>
+        <th style="width: 1%">Datum</th>
+        <th style="width: 8%">System</th>
+        <th style="width: 10%">Gruppe</th>
+        <th colspan="4">Code</th>
+    </tr>
+
+    <tr>
+        <form method="POST" action="liste_edit?{% if path_filter %}urlsystem={{path_filter}}{% endif %}&edit={{edit_entry.id}}">
+            {% csrf_token %}
+            <input type="hidden" name="post_id" value="edit">
+            <input type="hidden" name="id" value="{{edit_entry.id}}">
+            <td id="tabelle_fußzelle" style="text-align: center; border-bottom: 1px solid"><button onclick="location.href='liste{% if path_filter %}?urlsystem={{path_filter}}{% endif %}'" type="button" id="tabelle_buttonorange">~</button></td>
+            <td id="tabelle_fußzelle" style="border-bottom: 1px solid"></td>
+            <td id="tabelle_fußzelle" style="border-bottom: 1px solid">
+                <input list="datalist_gruppe" name="system" id="tabelle_input" value="{% if path_filter %}{{path_filter}}{% else %}{% endif %}" style="text-align: center">
+                <datalist id="datalist_gruppe" class="tabelle_fußzelle">
+                    {% for item in it_liste_system %}<option value="{{item}}">{{item}}</option>{% endfor %}
+                </datalist>
+            </td>
+            <td id="tabelle_fußzelle" style="border-bottom: 1px solid"><input id="tabelle_input" type="text" value="{{edit_entry.gruppe}}" name="gruppe" placeholder="Gruppe"></td>
+            <td id="tabelle_fußzelle" style="border-left: none; border-right: none; border-bottom: 1px solid"><input id="tabelle_input" type="text" value="{{edit_entry.beschreibung}}" name="beschreibung" placeholder="Beschreibung" autocomplete="off"><a>|</a></td>
+            <td id="tabelle_fußzelle" style="border-left: none; border-right: none; border-bottom: 1px solid"><input id="tabelle_input" type="text" value="{{edit_entry.code}}" name="code" placeholder="Code" style="text-align: center;" autocomplete="off"><a>|</a></td>
+            <td id="tabelle_fußzelle" style="border-left: none; border-bottom: 1px solid"><input id="tabelle_input" type="text" value="{{edit_entry.hinweise}}" name="hinweise" placeholder="Hinweise" style="text-align: center" autocomplete="off"></td>
+            <td id="tabelle_fußzelle" style="border-bottom: 1px solid"><input id="tabelle_buttongruen" type="submit" value="+"></td>
+        </form>
+    </tr>
+
+
+    {% for row in it_liste_all %}
+        <tr {% if edit_entry.id == row.id %} style="background-color: orange;" {% endif %}>
+            <form method="POST" action="liste_edit?{% if path_filter %}urlsystem={{path_filter}}{% endif %}">
+                {% csrf_token %}
+                <input type="hidden" name="post_id" value="delete">
+                <input type="hidden" name="delete_id" value="{{row.id}}">
+                <td id="tabelle_zelle" style="text-align: center; padding: 0px;" ><a href="liste_edit?{% if path_filter %}urlsystem={{path_filter}}{% endif %}&edit={{row.id}}" id="tabelle_edit">{{row.id}}</a></td>
+                <td id="tabelle_zelle" style="text-align: center">{{row.created_at}}</td>
+                <td id="tabelle_zelle" style="text-align: center">{{row.system}}</td>
+                <td id="tabelle_zelle">{{row.gruppe}}</td>
+                <td id="tabelle_zelle" style="border-left: none; border-right: none;">{{row.beschreibung}}</td>
+                <td id="tabelle_zelle" style="text-align: center; border-left: none; border-right: none; width: 50%;">{{row.code}}</td>
+                <td id="tabelle_zelle" style="text-align: end; border-left: none; border-right: none;">{{row.hinweise}}</td>
+                <td id="tabelle_zelle" style="text-align: center; padding: 0px;"><input id="tabelle_delete" type="submit" value="&#x1F5D1"></td>
+            </form>
+        </tr>
+    {% endfor %}
+
+
+
+    
+</table>
+
+{% endblock %}

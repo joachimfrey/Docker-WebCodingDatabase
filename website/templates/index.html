@@ -1,0 +1,62 @@
+{% extends "navbar.html" %}
+
+{% block content %}
+
+<div style="margin: 40px 0px 40px 0px; display: flex; flex-direction: column; gap: 30px; max-width: 1200px; margin-left: auto; margin-right: auto;">
+    <!-- Header -->
+    <div id="index_header">
+        <h1>JF Datenbank</h1>
+        <p>Willkommen! Hier ist ein Überblick über deine Inhalte</p>
+    </div>
+
+    <!-- Statistiken -->
+    <div id="index_stats_container">
+        <div id="index_stats_box">
+            <div class="stat_number">{{ liste_count }}</div>
+            <div class="stat_label">Listeneinträge</div>
+        </div>
+        <div id="index_stats_box">
+            <div class="stat_number">{{ skripte_count }}</div>
+            <div class="stat_label">Skripte</div>
+        </div>
+    </div>
+
+    <!-- Letzte Listeneinträge -->
+    {% if latest_liste %}
+    <div id="index_recent_section">
+        <h3>📋 Letzte Listeneinträge</h3>
+        <div id="index_recent_items_container">
+            {% for item in latest_liste %}
+            <div id="index_recent_item">
+                <div class="item_content">
+                    <div class="item_title">{{ item.beschreibung }}</div>
+                    <div class="item_info">{{ item.system }} • {{ item.gruppe }}</div>
+                </div>
+                <div class="item_date">{{ item.created_at|date:"d.m.Y" }}</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Letzte Skripte -->
+    {% if latest_skripte %}
+    <div id="index_recent_section">
+        <h3>📝 Letzte Skripte</h3>
+        <div id="index_recent_items_container">
+            {% for item in latest_skripte %}
+            <div id="index_recent_item">
+                <div class="item_content">
+                    <div class="item_title">{{ item.titel }}</div>
+                    <div class="item_info">{{ item.system }}</div>
+                </div>
+                <div class="item_date">{{ item.created_at|date:"d.m.Y" }}</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}

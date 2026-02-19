@@ -14,10 +14,11 @@ services:
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
+      test: ["CMD-SHELL", "pg_isready -h localhost -p 5432 -U ${DB_USER} -d ${DB_NAME}"]
       interval: 10s
       timeout: 5s
-      retries: 5
+      retries: 30
+      start_period: 30s
     restart: unless-stopped
     networks:
       - jfdb-network

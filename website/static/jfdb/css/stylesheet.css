@@ -458,13 +458,6 @@ tr:has(#tabelle_edit:hover)
     white-space: nowrap;
 }
 
-#footer_form {
-    /* display: grid; */
-    /* grid-template-columns:35px 8% 8% 8% 50% 1fr 2%; */
-    /* gap: 8px; */
-    /* align-items: center; */
-}
-
 /* ensure inputs inside footer are full-width and aligned */
 #footer_form input[type="text"], #footer_form input[list], #footer_form select {
     padding: 6px 8px;
